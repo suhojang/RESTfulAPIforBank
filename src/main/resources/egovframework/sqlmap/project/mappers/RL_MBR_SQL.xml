@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.service.impl.RL_MBR_Mapper">
+	<!-- 상사 조회 -->
+	<select id="RL_MBR_S1000J" parameterType="Map" resultType="oMap"><![CDATA[
+		SELECT 
+			A.MBRINF_SEQ
+			,A.GRPINF_SEQ
+			,A.MBRINF_CNO
+			,A.MBRINF_CNM
+			,A.MBRINF_YN
+			,A.MBRINF_RDT
+			,A.MBRINF_UDT
+		FROM TBRL_MBRINF A
+		WHERE 1=1
+		AND A.MBRINF_YN		= 'Y'
+		AND A.GRPINF_SEQ 	= (SELECT GRPINF_SEQ FROM TBRL_GRPINF WHERE GRPINF_CNO = #{GRPBIZNO})
+	]]><if test="MEMBIZNO != null and MEMBIZNO != ''">
+		AND A.MBRINF_CNO 	= #{MEMBIZNO}
+	</if>
+	<if test="MEMNM != null and MEMNM != ''">
+		AND A.MBRINF_CNM 	= #{MEMNM}
+	</if>
+	<![CDATA[
+		ORDER BY MBRINF_SEQ DESC
+		LIMIT #{limit} OFFSET #{offset}
+		;
+	]]></select>
+	
+	<!-- 상사 총개수 조회 -->
+	<select id="RL_MBR_S2000J" parameterType="Map" resultType="int"><![CDATA[
+		SELECT 
+			COUNT(A.MBRINF_SEQ) AS CNT
+		FROM TBRL_MBRINF A
+		WHERE 1=1
+		AND A.MBRINF_YN		= 'Y'
+		AND A.GRPINF_SEQ 	= (SELECT GRPINF_SEQ FROM TBRL_GRPINF WHERE GRPINF_CNO = #{GRPBIZNO})
+		AND A.MBRINF_CNO 	= #{MEMBIZNO}
+		;
+	]]></select>
+	
+	<!-- 상사정보 상세 조회 -->
+	<select id="RL_MBR_V1000J" parameterType="Map" resultType="oMap"><![CDATA[
+		SELECT 
+			A.MBRINF_SEQ
+			,A.GRPINF_SEQ
+			,A.MBRINF_CNO
+			,A.MBRINF_CNM
+			,A.MBRINF_YN
+			,A.MBRINF_RDT
+			,A.MBRINF_UDT
+		FROM TBRL_MBRINF A
+		WHERE 1=1
+			AND A.MBRINF_YN		= 'Y'
+			AND A.GRPINF_SEQ 	= (SELECT GRPINF_SEQ FROM TBRL_GRPINF WHERE GRPINF_CNO = #{GRPBIZNO})
+			AND A.MBRINF_CNO 	= #{MEMBIZNO}
+		;
+	]]></select>
+	
+	<!-- 상사 은행 상세 조회 -->
+	<select id="RL_MBR_V1001J" parameterType="Map" resultType="oMap"><![CDATA[
+		SELECT 
+			A.MBRBNK_SEQ
+			,A.MBRINF_SEQ
+			,A.MBRBNK_BNKCD
+			,A.MBRBNK_DISCD
+			,A.MBRBNK_FBSCD
+			,A.MBRBNK_CHNL
+			,A.MBRBNK_RCYN
+			,A.MBRBNK_OPDT
+			,A.MBRBNK_OPYN
+			,A.MBRBNK_YN
+			,A.MBRBNK_RDT
+			,A.MBRBNK_UDT
+		FROM TBRL_MBRBNK A
+		WHERE 1=1
+			AND A.MBRBNK_YN		= 'Y'
+			AND A.MBRINF_SEQ 	= (
+				SELECT 
+					MBRINF_SEQ 
+				FROM TBRL_MBRINF 
+				WHERE MBRINF_YN = 'Y' 
+					AND MBRINF_CNO = #{MEMBIZNO}
+					AND GRPINF_SEQ = (
+						SELECT GRPINF_SEQ FROM TBRL_GRPINF WHERE GRPINF_CNO = #{GRPBIZNO}
+					)
+			)
+			AND A.MBRBNK_BNKCD	= #{BANKCD}
+		LIMIT 1
+		;
+	]]></select>
+	
+	<!-- 상사별 은행정보 조회 -->
+	<select id="RL_MBR_S1001J" parameterType="Map" resultType="oMap"><![CDATA[
+		SELECT 
+			A.MBRBNK_SEQ
+			,A.MBRINF_SEQ
+			,A.MBRBNK_BNKCD
+			,A.MBRBNK_DISCD
+			,A.MBRBNK_FBSCD
+			,A.MBRBNK_CHNL
+			,A.MBRBNK_RCYN
+			,A.MBRBNK_OPDT
+			,A.MBRBNK_OPYN
+			,A.MBRBNK_YN
+			,A.MBRBNK_RDT
+			,A.MBRBNK_UDT
+		FROM TBRL_MBRBNK A
+		WHERE 1=1
+			AND A.MBRBNK_YN		= 'Y'
+			AND A.MBRINF_SEQ 	= #{MBRINF_SEQ}
+			]]>
+			<if test="CHANNEL != null and CHANNEL != ''">
+				<![CDATA[
+					AND A.MBRBNK_CHNL	= #{CHANNEL}
+			]]></if>
+			<if test="BANKCD != null and BANKCD != ''">
+				<![CDATA[
+					AND A.MBRBNK_BNKCD	= #{BANKCD}
+			]]></if>
+			<if test="FBSCODE != null and FBSCODE != ''">
+				<![CDATA[
+					AND A.MBRBNK_FBSCD	= #{FBSCODE}
+			]]></if>
+		;
+	</select>
+	
+	<!-- 상사정보 등록 -->
+	<insert id="RL_MBR_I1000J" parameterType="Map"><![CDATA[
+		INSERT INTO TBRL_MBRINF(
+			MBRINF_SEQ
+			,GRPINF_SEQ
+			,MBRINF_CNO
+			,MBRINF_CNM
+		)VALUES(
+			 #{MBRINF_SEQ}
+			,(SELECT GRPINF_SEQ FROM TBRL_GRPINF WHERE GRPINF_YN = 'Y' AND GRPINF_CNO = #{GRPBIZNO})
+			,#{MEMBIZNO}
+			,#{MEMNM}
+		)
+		;
+	]]></insert>
+	
+	<!-- 상사 은행정보 등록 -->
+	<insert id="RL_MBR_I1001J" parameterType="Map"><![CDATA[
+		INSERT INTO TBRL_MBRBNK(
+			MBRBNK_SEQ
+			,MBRINF_SEQ
+			,MBRBNK_BNKCD
+			,MBRBNK_DISCD
+			,MBRBNK_FBSCD
+			,MBRBNK_CHNL
+			,MBRBNK_RCYN
+		)
+		VALUES(
+			#{MBRBNK_SEQ}
+			,#{MBRINF_SEQ}
+			,#{BANKCD}
+			,#{MBRBNK_DISCD}
+			,#{FBSCODE}
+			,#{MBRBNK_CHNL}
+			,#{RECCODEYN}
+		)
+		;
+	]]></insert>
+	
+	<!-- 전문번호 초기 등록 -->
+	<insert id="RL_MBR_I1002J" parameterType="Map"><![CDATA[
+		INSERT INTO TBRL_PRFNBM(
+			MBRBNK_SEQ
+			,PRFNBM_SDAT
+			,PRFNBM_PRFNO
+		)VALUES(
+			 #{MBRBNK_SEQ}
+			,REPLACE(CURDATE(),'-','')
+			,'0'
+		)
+		;
+	]]></insert>
+	
+	<!-- 상사정보 삭제 -->
+	<delete id="RL_MBR_D1000J" parameterType="Map"><![CDATA[
+		DELETE FROM TBRL_MBRINF 
+		WHERE 1=1
+			AND GRPINF_SEQ	= (SELECT GRPINF_SEQ FROM TBRL_GRPINF WHERE GRPINF_YN = 'Y' AND GRPINF_CNO = #{GRPBIZNO})
+			AND MBRINF_CNO	= #{MEMBIZNO}
+		;
+	]]></delete>
+	
+	<!-- 상사 은행 정보 삭제 -->
+	<delete id="RL_MBR_D1001J" parameterType="Map"><![CDATA[
+		DELETE FROM TBRL_MBRBNK 
+		WHERE 1=1
+			AND MBRINF_SEQ	= (
+				SELECT 
+					MBRINF_SEQ 
+				FROM TBRL_MBRINF 
+				WHERE 1=1
+				  	AND GRPINF_SEQ	= (SELECT GRPINF_SEQ FROM TBRL_GRPINF WHERE GRPINF_YN = 'Y' AND GRPINF_CNO = #{GRPBIZNO})
+					AND MBRINF_CNO	= #{MEMBIZNO}
+			)
+		;
+	]]></delete>
+	
+</mapper>

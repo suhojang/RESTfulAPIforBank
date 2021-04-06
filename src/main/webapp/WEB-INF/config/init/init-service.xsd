@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+<xsd:element name="init-service">
+	<xsd:complexType>
+    	<xsd:sequence>
+        	<xsd:element name="service" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+    				<xsd:sequence>
+    					<xsd:element name="name" type="xsd:string"/>
+    					<xsd:element name="desc" type="xsd:string" minOccurs="0"/>
+    					<xsd:element name="service-class" type="xsd:string"/>
+    					<xsd:element name="runnable" type="xsd:boolean"/>
+    					<xsd:element name="init-start" type="xsd:boolean"/>
+    					<xsd:element name="init-time" type="xsd:int"/>
+    					<xsd:element name="sleep-time" type="xsd:int"/>
+    					<xsd:element name="run-times" type="xsd:int"/>
+    					<xsd:element name="init-params">
+							<xsd:complexType>
+			    				<xsd:sequence>
+    								<xsd:element name="param" minOccurs="0" maxOccurs="unbounded">
+										<xsd:complexType>
+											<xsd:simpleContent>
+												<xsd:extension base="xsd:string">
+													<xsd:attribute name="name" type="xsd:string" use="required"/>
+													<xsd:attribute name="desc" type="xsd:string"/>
+												</xsd:extension>
+											</xsd:simpleContent>
+										</xsd:complexType>
+    								</xsd:element>
+			    				</xsd:sequence>
+		    				</xsd:complexType>
+    					</xsd:element>
+					</xsd:sequence>
+					<xsd:attribute name="desc" type="xsd:string"/>
+				</xsd:complexType>
+        	</xsd:element>
+        </xsd:sequence>
+		<xsd:attribute name="desc" type="xsd:string"/>
+	</xsd:complexType>
+</xsd:element>
+
+</xsd:schema>

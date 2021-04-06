@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.service.impl.CMN_CMN_Mapper">
+
+	<update id="nextval" statementType="CALLABLE" parameterType="Map">
+		{call relaydb.SP_NEXTVAL(#{sqname, mode=IN, jdbcType=VARCHAR, javaType=string},#{RESULT, mode=OUT, jdbcType=VARCHAR, javaType=string})}
+	</update>
+	<update id="currentval" statementType="CALLABLE" parameterType="Map">
+		{call relaydb.SP_CURRVAL(#{sqname, mode=IN, jdbcType=VARCHAR, javaType=string},#{RESULT, mode=OUT, jdbcType=VARCHAR, javaType=string})}
+	</update>
+	
+	<update id="nextpfrno" statementType="CALLABLE" parameterType="Map">
+		{call relaydb.SP_NEXTPFRNO(#{sqno, mode=IN, jdbcType=VARCHAR, javaType=string},#{RESULT, mode=OUT, jdbcType=VARCHAR, javaType=string})}
+	</update>
+
+	<!-- 요청 로그 등록 -->
+	<insert id="log" parameterType="Map"><![CDATA[
+		INSERT INTO TBRL_TRSLOG(
+			LOG_TIME
+			,LOG_IP
+			,LOG_URL
+			,LOG_ISSNO
+			,LOG_REQ
+			,LOG_RES
+			,LOG_CHNL_REQ
+			,LOG_CHNL_RES
+			,LOG_RDT
+		)VALUES(
+			#{log_time}
+			,#{log_ip}
+			,#{log_url}
+			,#{log_issno}
+			,#{log_req}
+			,#{log_res}
+			,#{log_chnl_req}
+			,#{log_chnl_res}
+			,CURRENT_TIMESTAMP
+		)
+	]]></insert>
+	
+	<!-- 공통코드 조회 -->
+	<select id="CMN_CMN_S10000" parameterType="Map" resultType="oMap"><![CDATA[
+		SELECT
+			CDCLS_CLSCD
+			,CDDTL_DTLCD
+			,CDDTL_NM
+			,CDDTL_ORD
+			,CDDTL_USEYN
+			,CDDTL_RUSR
+			,CDDTL_RDT
+		FROM TBRL_CDDTL
+		WHERE 1=1
+			AND CDCLS_CLSCD	= #{CLSCD}
+			AND CDDTL_DTLCD	= #{DTLCD}
+		;
+	]]></select>
+	
+	
+	<!-- 거래고유번호 체크 -->
+	<select id="CMN_CMN_S10001" parameterType="Map" resultType="oMap"><![CDATA[
+		SELECT
+			COUNT(LOG_SEQ) AS CNT
+		FROM TBRL_TRSLOG
+		WHERE 1=1
+			AND LOG_ISSNO = #{ISSUENO}
+		; 
+	]]></select>
+</mapper>

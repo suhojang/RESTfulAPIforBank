@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.service.impl.RL_DPS_Mapper">
+	<!-- 이체 요청 정보 저장  -->
+	<insert id="RL_DPS_I1000J" parameterType="Map"><![CDATA[
+		INSERT INTO TBRL_TRSRQ(
+			TRSRQ_SEQ
+			,MBRINF_SEQ
+			,TRSRQ_MSGCD
+			,TRSRQ_SVRCD
+			,TRSRQ_ISUNO
+			,TRSRQ_PRFNO
+			,TRSRQ_RCCD
+			,TRSRQ_OBKCD
+			,TRSRQ_OACNO
+			,TRSRQ_OPW
+			,TRSRQ_OAMT
+			,TRSRQ_ODSC
+			,TRSRQ_IBKCD
+			,TRSRQ_IACNO
+			,TRSRQ_IDSC
+			,TRSRQ_RQTM
+			,TRSRQ_CMSCD
+			,TRSRQ_SRYN
+			,TRSRQ_TRSRQ
+		)VALUES(
+			#{TRSRQ_SEQ}
+			,#{MBRINF_SEQ}
+			,#{TRSRQ_MSGCD}
+			,#{TRSRQ_SVRCD}
+			,#{TRSRQ_ISUNO}
+			,#{TRSRQ_PRFNO}
+			,#{TRSRQ_RCCD}
+			,#{TRSRQ_OBKCD}
+			,#{TRSRQ_OACNO}
+			,#{TRSRQ_OPW}
+			,#{TRSRQ_OAMT}
+			,#{TRSRQ_ODSC}
+			,#{TRSRQ_IBKCD}
+			,#{TRSRQ_IACNO}
+			,#{TRSRQ_IDSC}
+			,#{TRSRQ_RQTM}
+			,#{TRSRQ_CMSCD}
+			,#{TRSRQ_SRYN}
+			,#{TRSRQ_TRSRQ}
+		)
+		;
+	]]></insert>
+	
+	<!-- ksnet 이체 응답 데이터 저장 -->
+	<update id="RL_DPS_U1000J" parameterType="Map"><![CDATA[
+		UPDATE TBRL_TRSRQ
+		SET TRSRQ_RSDT		= CURRENT_TIMESTAMP
+			,TRSRQ_SIGN 	= #{TRSRQ_SIGN}
+			,TRSRQ_BLNC 	= #{TRSRQ_BLNC}
+			,TRSRQ_FEE 		= #{TRSRQ_FEE}
+			,TRSRQ_TRSRS 	= #{TRSRQ_TRSRS}
+			,TRSRQ_RSYN 	= #{TRSRQ_RSYN}
+			,TRSRQ_RSCD 	= #{TRSRQ_RSCD}
+		WHERE 1=1
+			AND TRSRQ_SEQ	= #{TRSRQ_SEQ}
+		;
+	]]></update>
+	
+	<!-- ksnet 이체 요청 시각 데이터 저장 -->
+	<update id="RL_DPS_U1001J" parameterType="Map"><![CDATA[
+		UPDATE TBRL_TRSRQ
+		SET TRSRQ_RQDT		= CURRENT_TIMESTAMP
+		WHERE 1=1
+			AND TRSRQ_SEQ	= #{TRSRQ_SEQ}
+		;
+	]]></update>
+	
+	<!-- 이체 서버 송신 시각 데이터 저장 -->
+	<update id="RL_DPS_U1002J" parameterType="Map"><![CDATA[
+		UPDATE TBRL_TRSRQ
+		SET TRSRQ_SNDDT		= CURRENT_TIMESTAMP
+		WHERE 1=1
+			AND TRSRQ_SEQ	= #{TRSRQ_SEQ}
+		;
+	]]></update>
+	
+	<!-- 거래고유번호에 해당하는 지급이체 요청 정보 가져오기 -->
+	<select id="RL_DPS_V1000J" parameterType="Map" resultType="oMap"><![CDATA[
+		SELECT
+			TRSRQ_SEQ
+			,MBRINF_SEQ
+			,TRSRQ_MSGCD
+			,TRSRQ_SVRCD
+			,TRSRQ_ISUNO
+			,TRSRQ_PRFNO
+			,TRSRQ_RCCD
+			,TRSRQ_OBKCD
+			,TRSRQ_OACNO
+			,TRSRQ_OPW
+			,TRSRQ_OAMT
+			,TRSRQ_ODSC
+			,TRSRQ_IBKCD
+			,TRSRQ_IACNO
+			,TRSRQ_IDSC
+			,TRSRQ_RQTM
+			,TRSRQ_CMSCD
+			,TRSRQ_SRYN
+			,TRSRQ_SIGN
+			,TRSRQ_BLNC
+			,TRSRQ_FEE
+			,TRSRQ_PAYNBR
+			,TRSRQ_TRSTM
+			,TRSRQ_PRCCD
+			,TRSRQ_PYRNBR
+			,TRSRQ_BNKCD
+			,TRSRQ_RSYN
+			,TRSRQ_RSCD
+			,TRSRQ_RSRSYN
+			,TRSRQ_RSRSCD
+			,TRSRQ_TRSRQ
+			,TRSRQ_TRSRS
+			,TRSRQ_RESRQ
+			,TRSRQ_RESRS
+			,TRSRQ_RCVDT
+			,TRSRQ_SNDDT
+			,TRSRQ_RQDT
+			,TRSRQ_RSDT
+			,TRSRQ_RSRCVDT
+			,TRSRQ_RSSNDDT
+			,TRSRQ_RSRQDT
+			,TRSRQ_RSRSDT
+			,TRSRQ_RDT
+			,TRSRQ_UDT
+		FROM TBRL_TRSRQ
+		WHERE 1=1
+			AND TRSRQ_MSGCD	= '0100'
+			AND TRSRQ_SVRCD	= '100'
+			AND TRSRQ_ISUNO = #{ISSUENO}
+			AND MBRINF_SEQ	= (
+				SELECT 
+					MBRINF_SEQ 
+				FROM TBRL_MBRINF 
+				WHERE MBRINF_YN = 'Y' 
+					AND MBRINF_CNO = #{MEMBIZNO}
+					AND GRPINF_SEQ = (
+						SELECT GRPINF_SEQ FROM TBRL_GRPINF WHERE GRPINF_CNO = #{GRPBIZNO}
+					)
+			)
+		;
+	]]></select>
+	
+	<!-- 이체 처리결과 조회 요청 정보 저장 -->
+	<update id="RL_DPS_I1001J" parameterType="Map"><![CDATA[
+		UPDATE TBRL_TRSRQ
+		SET TRSRQ_RSRCVDT	= CURRENT_TIMESTAMP
+			,TRSRQ_RESRQ	= #{TRSRQ_RESRQ}
+		WHERE 1=1
+			AND TRSRQ_SEQ	= #{TRSRQ_SEQ}
+		;
+	]]></update>
+	
+		
+	<!-- ksnet 이체 처리결과 요청 시각 데이터 저장 -->
+	<update id="RL_DPS_U1003J" parameterType="Map"><![CDATA[
+		UPDATE TBRL_TRSRQ
+		SET TRSRQ_RSRQDT	= CURRENT_TIMESTAMP
+		WHERE 1=1
+			AND TRSRQ_SEQ	= #{TRSRQ_SEQ}
+		;
+	]]></update>
+	
+	<!-- 이체 처리결과 서버 송신 시각 데이터 저장 -->
+	<update id="RL_DPS_U1004J" parameterType="Map"><![CDATA[
+		UPDATE TBRL_TRSRQ
+		SET TRSRQ_RSSNDDT	= CURRENT_TIMESTAMP
+		WHERE 1=1
+			AND TRSRQ_SEQ	= #{TRSRQ_SEQ}
+		;
+	]]></update>
+	
+	<!-- ksnet 이체 처리결과 응답 데이터 저장 -->
+	<update id="RL_DPS_U1005J" parameterType="Map"><![CDATA[
+		UPDATE TBRL_TRSRQ
+		SET TRSRQ_RSRSDT	= CURRENT_TIMESTAMP
+			,TRSRQ_OACNO 	= #{TRSRQ_OACNO}
+			,TRSRQ_IACNO 	= #{TRSRQ_IACNO}
+			,TRSRQ_OAMT 	= #{TRSRQ_OAMT}
+			,TRSRQ_FEE 		= #{TRSRQ_FEE}
+			,TRSRQ_PAYNBR 	= #{TRSRQ_PAYNBR}
+			,TRSRQ_TRSTM 	= #{TRSRQ_TRSTM}
+			,TRSRQ_PRCCD 	= #{TRSRQ_PRCCD}
+			,TRSRQ_PYRNBR 	= #{TRSRQ_PYRNBR}
+			,TRSRQ_BNKCD 	= #{TRSRQ_BNKCD}
+			,TRSRQ_RSRSYN 	= #{TRSRQ_RSRSYN}
+			,TRSRQ_RSRSCD 	= #{TRSRQ_RSRSCD}
+			,TRSRQ_RESRS 	= #{TRSRQ_RESRS}
+		WHERE 1=1
+			AND TRSRQ_SEQ	= #{TRSRQ_SEQ}
+		;
+	]]></update>
+</mapper>

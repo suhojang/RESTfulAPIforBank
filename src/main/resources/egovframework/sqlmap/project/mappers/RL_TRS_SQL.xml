@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.service.impl.RL_TRS_Mapper">
+	<!-- 거래내역 조회 -->
+	<select id="RL_TRS_S1000J" parameterType="Map" resultType="oMap"><![CDATA[
+		SELECT 
+			A.TRSHIS_SEQ
+			,A.MBRBNK_SEQ
+			,A.TRSHIS_SNDCNT
+			,A.TRSHIS_TRSNO
+			,A.TRSHIS_SNDDT
+			,A.TRSHIS_SNDTM
+			,A.TRSHIS_RSCD
+			,A.TRSHIS_BRSCD
+			,(SELECT CDDTL_NM FROM TBRL_CDDTL WHERE CDDTL_USEYN = 'Y' AND CDCLS_CLSCD = '0004' AND CDDTL_DTLCD = A.TRSHIS_BRSCD) AS TRSHIS_BRSCD_NM
+			,A.TRSHIS_SCHNO
+			,A.TRSHIS_ACCNO
+			,A.TRSHIS_ASMCNT
+			,A.TRSHIS_TRSKN
+			,(SELECT CDDTL_NM FROM TBRL_CDDTL WHERE CDDTL_USEYN = 'Y' AND CDCLS_CLSCD = '0001' AND CDDTL_DTLCD = A.TRSHIS_TRSKN) AS TRSHIS_TRSKN_NM
+			,A.TRSHIS_TRSAMT
+			,A.TRSHIS_ACCAMT
+			,A.TRSHIS_NTC
+			,A.TRSHIS_CHKNO
+			,A.TRSHIS_CASH
+			,A.TRSHIS_CHKAMT
+			,A.TRSHIS_ETCAMT
+			,A.TRSHIS_VACCNO
+			,A.TRSHIS_TRSDT
+			,A.TRSHIS_TRSTM
+			,A.TRSHIS_BKTRNO
+			,A.TRSHIS_TRBKCD
+			,A.TRSHIS_BRNCD
+			,A.TRSHIS_ORGRQ
+			,A.TRSHIS_INVLDYN
+			,A.TRSHIS_INLRQ
+			,A.TRSHIS_INLRS
+			,A.TRSHIS_INLRQTM
+			,A.TRSHIS_INLRSTM
+			,A.TRSHIS_SCHYN
+			,A.TRSHIS_SCHDT
+			,A.TRSHIS_ISUNO
+			,A.TRSHIS_RDT
+			,A.TRSHIS_UDT
+		FROM TBRL_TRSHIS A
+		WHERE 1=1
+		AND A.MBRBNK_SEQ 	= #{MBRBNK_SEQ}
+	]]><if test="ENC_ACCTNO != null and ENC_ACCTNO != ''"><![CDATA[
+		AND A.TRSHIS_ACCNO 	= #{ENC_ACCTNO}
+	]]></if>
+	<![CDATA[
+		AND TRSHIS_TRSDT BETWEEN #{SDATE} AND #{EDATE}
+		ORDER BY TRSHIS_SEQ DESC
+		LIMIT #{limit} OFFSET #{offset}
+		;
+	]]></select>
+	
+	<!-- 거래내역 총개수 조회 -->
+	<select id="RL_TRS_S2000J" parameterType="Map" resultType="int"><![CDATA[
+		SELECT 
+			COUNT(A.TRSHIS_SEQ) AS CNT
+		FROM TBRL_TRSHIS A
+		WHERE 1=1
+		]]><if test="MBRBNK_SEQ != null and MBRBNK_SEQ != ''"><![CDATA[
+			AND A.MBRBNK_SEQ 	= #{MBRBNK_SEQ}
+		]]></if><if test="ENC_ACCTNO != null and ENC_ACCTNO != ''"><![CDATA[
+			AND A.TRSHIS_ACCNO 	= #{ENC_ACCTNO}
+		]]></if>
+		<![CDATA[
+			AND TRSHIS_TRSDT BETWEEN #{SDATE} AND #{EDATE}
+			;
+	]]></select>
+	
+	<!-- 거래내역 조회정보 저장 -->
+	<update id="RL_TRS_U1000J" parameterType="Map"><![CDATA[
+		UPDATE TBRL_TRSHIS
+		SET TRSHIS_SCHYN		= 'Y'
+			,TRSHIS_SCHDTM		= CURRENT_TIMESTAMP
+			,TRSHIS_ISUNO		= #{ISSUENO}
+		WHERE 1=1
+			AND TRSHIS_SEQ	= #{TRSHIS_SEQ}
+		;
+	]]></update>
+</mapper>

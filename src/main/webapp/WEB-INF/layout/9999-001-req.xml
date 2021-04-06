@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<layout desc="단지 사업자정보 등록" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="./layout.xsd">
+
+	<field name="MESSAGECODE"	maxBytes="4"	required="Y"	type="C"	desc="메시지코드" />
+	<field name="SERVICECODE"	maxBytes="3"	required="Y"	type="C"	desc="업무구분코드" />
+	<field name="GRPBIZNO"		maxBytes="13"	required="Y"	type="C"	desc="단지사업자번호" />
+	<field name="GRPNM"			maxBytes="100"	required="Y"	type="C"	desc="단지사업자명" />
+</layout>

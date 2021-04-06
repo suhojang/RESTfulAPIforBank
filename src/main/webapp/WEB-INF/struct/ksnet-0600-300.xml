@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<struct>
+	<!-- KS-NET 잔액 조회 요청 -->
+	<!-- 공통부 -->
+	<field name="H_GP_CD"		length="9"		type="C"	mappingElement="DISCD"	  	default=""/>			<!-- 식별코드(기업(TXEB9KSV), 국민(업체코드와 동일), 외환(REALTIME), 농협(SRS1), 씨티(JCKC),전북(DONKSVN) 그 외 은행은 SPACE) -->
+	<field name="H_FBS_CD"		length="8"		type="C"	mappingElement="FBSCD"	  	default=""/>			<!-- 업체코드 -->
+	<field name="H_BNK_CD2"		length="2"		type="C"	default=""/> 			<!-- 은행코드2 -->
+	<field name="H_MSG_CD"		length="4"		type="C"	default="0600"/>		<!-- 메시지코드 -->
+	<field name="H_SVR_CD"		length="3"		type="C"	default="300"/>			<!-- 업무구분코드 -->
+	<field name="H_SND_CNT"		length="1"		type="C"	default="1"/>			<!-- 송신횟수 -->
+	<field name="H_SEQ_NO"		length="6"		type="N"	mappingElement="SEQNO"	  	default=""/>			<!-- 전문번호 -->
+	<field name="H_SND_DT"		length="8"		type="D"  	default=""/>			<!-- 전송일자 -->
+	<field name="H_SND_TM"		length="6"		type="T"  	default=""/>			<!-- 전송시간 -->			
+	<field name="H_RS_CD"		length="4"		type="C"	default=""/> 			<!-- 응답코드 -->
+	<field name="BANKRESPCODE"	length="4"		type="C"	default=""/> 			<!-- 은행 응답코드(전문을 전송할 은행(펌뱅킹 계약한 은행)의 응답 코드) -->
+	<field name="H_SH_DT"		length="8"		type="N"	default=""/>			<!-- 조회일자 -->
+	<field name="H_SH_NO"		length="6"		type="N"	default=""/>			<!-- 조회번호 -->
+	<field name="H_BNK_NO"		length="15"		type="C"	default=""/>			<!-- 은행전문번호 -->
+	<field name="H_BNK_CD3"		length="3"		type="C"	mappingElement="BANKCD"	  	default="004"/>			<!-- 은행코드3(전문을 전송할 은행(펌뱅킹 계약한 은행)의 은행코드) -->
+	<field name="H_FLR"			length="13"		type="C"	default=""/>			<!-- 예비3 -->
+	
+	<!-- 잔액조회 개별부 -->	
+	<field name="ACC_NO"			length="15"		type="C"	mappingElement="ACCTNO"	  	default=""/>			<!-- 계좌번호 -->
+	<field name="BLC_CD"			length="1"		type="C"	default=""/>			<!-- 잔액 부호 -->
+	<field name="BALANCE"			length="13"		type="N"	default=""/>			<!-- 계좌 잔액 -->
+	<field name="BLC_CASH_REG"		length="13"		type="N"	default=""/>			<!-- 잔액-자기앞 -->
+	<field name="BLC_HLD"			length="13"		type="N"	default=""/>			<!-- 잔액-가계 -->
+	<field name="BLC_GNL"			length="13"		type="N"	default=""/>			<!-- 잔액-일반 -->
+	<field name="BALANCEAVAILABLE"	length="13"		type="N"	default=""/>			<!-- 지급 가능 금액 -->
+	<field name="FLR"				length="119"	type="C"	default=""/>			<!-- 예비 -->
+</struct>

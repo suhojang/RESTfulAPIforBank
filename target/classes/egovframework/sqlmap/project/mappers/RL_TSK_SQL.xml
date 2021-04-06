@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.service.impl.RL_TSK_Mapper">
+	<!-- 업무개시 대상 목록 조회 -->
+	<select id="RL_TSK_S1000J" parameterType="Map" resultType="oMap"><![CDATA[
+		SELECT 
+			A.MBRBNK_SEQ
+			,A.MBRINF_SEQ
+			,A.MBRBNK_BNKCD
+			,A.MBRBNK_DISCD
+			,A.MBRBNK_FBSCD
+			,A.MBRBNK_CHNL
+			,A.MBRBNK_RCYN
+			,A.MBRBNK_OPDT
+			,A.MBRBNK_OPYN
+			,A.MBRBNK_YN
+			,A.MBRBNK_RDT
+			,A.MBRBNK_UDT
+		FROM TBRL_MBRBNK A
+		WHERE 1=1
+			AND A.MBRBNK_YN		= 'Y'
+			AND A.MBRBNK_OPYN	= 'N'
+			AND A.MBRBNK_OPDT	= REPLACE(CURDATE(),'-','')
+		ORDER BY A.MBRBNK_SEQ
+		;
+	]]></select>
+
+	<!-- 개시여부, 개시일자 변경 -->
+	<update id="RL_TSK_U1000J" parameterType="Map"><![CDATA[
+		UPDATE TBRL_MBRBNK
+		SET MBRBNK_OPDT		= #{MBRBNK_OPDT}
+			,MBRBNK_OPYN	= #{MBRBNK_OPYN}
+		WHERE 1=1
+		]]><if test="MBRBNK_SEQ != null and MBRBNK_SEQ != ''">
+			AND MBRBNK_SEQ	= #{MBRBNK_SEQ}
+		</if><![CDATA[
+		;
+		]]></update>
+	
+	<!-- 결번 요청 데이터 조회 -->	
+	<select id="RL_TSK_S2000J" resultType="oMap"><![CDATA[
+		SELECT
+			CAST(BNKSEQ AS INT) AS AF_BNKSEQ
+			,CAST(MBRBNK_SEQ AS INT) AS BF_BNKSEQ
+			,CAST(DIFF_SEQ AS INT) AS DIFF_SEQ
+			,CAST(TRSDT AS VARCHAR(8)) AS AF_TRSDT
+			,CAST(TRSHIS_TRSDT AS VARCHAR(8)) AS BF_TRSDT
+			,CAST(DIFF_TRSDT AS INT) AS DIFF_TRSDT
+			,CAST(TRSNO AS INT) AS AF_TRSNO
+			,CAST(TRSHIS_TRSNO AS INT) AS BF_TRSNO
+			,CAST(DIFF_TRSNO AS INT) AS DIFF_TRSNO
+		FROM
+		(
+			SELECT 
+				@TMP_BNKSEQ AS BNKSEQ
+				,B.MBRBNK_SEQ AS MBRBNK_SEQ
+				,CASE WHEN @TMP_BNKSEQ IS NOT NULL THEN
+					B.MBRBNK_SEQ - @TMP_BNKSEQ
+				ELSE
+					0
+				END AS DIFF_SEQ
+				,@TMP_BNKSEQ := B.MBRBNK_SEQ
+				
+				,@TMP_TRSDT AS TRSDT
+				,B.TRSHIS_TRSDT AS TRSHIS_TRSDT
+				,CASE WHEN @TMP_TRSDT IS NOT NULL THEN
+					B.TRSHIS_TRSDT - @TMP_TRSDT
+				ELSE
+					0
+				END AS DIFF_TRSDT
+				,@TMP_TRSDT:=B.TRSHIS_TRSDT
+				
+				,@TMP_TRSNO AS TRSNO
+				,B.TRSHIS_TRSNO AS TRSHIS_TRSNO
+				,CASE WHEN @TMP_TRSNO IS NOT NULL THEN
+					B.TRSHIS_TRSNO - @TMP_TRSNO
+				ELSE
+					1
+				END DIFF_TRSNO
+				
+				,@TMP_TRSNO:=B.TRSHIS_TRSNO
+			FROM 
+			(
+				SELECT
+					@TMP_BNKSEQ := NULL
+					,@TMP_TRSDT := NULL
+					,@TMP_TRSNO := NULL
+			) AS A,
+			TBRL_TRSHIS B
+			ORDER BY MBRBNK_SEQ, TRSHIS_TRSDT, TRSHIS_TRSNO
+		) A
+		;
+	]]></select>
+	
+	<!-- 상사별 은행정보 조회 -->
+	<select id="RL_TSK_S3000J" parameterType="Map" resultType="oMap"><![CDATA[
+		SELECT
+			MBRBNK_SEQ
+			,MBRINF_SEQ
+			,MBRBNK_BNKCD
+			,MBRBNK_DISCD
+			,MBRBNK_FBSCD
+			,MBRBNK_CHNL
+			,MBRBNK_RCYN
+			,MBRBNK_OPDT
+			,MBRBNK_OPYN
+			,MBRBNK_YN
+			,MBRBNK_RDT
+			,MBRBNK_UDT
+		FROM TBRL_MBRBNK
+		WHERE 1=1
+			AND MBRBNK_SEQ = #{MBRBNK_SEQ}
+		;			
+	]]></select>
+	
+	<!-- 거래내역 통지 결번 요청 데이터 저장 -->
+	<insert id="RL_TSK_I3000J" parameterType="Map"><![CDATA[
+		INSERT INTO TBRL_TRSHIS
+		(
+			TRSHIS_SEQ
+			,MBRBNK_SEQ
+			,TRSHIS_SNDCNT
+			,TRSHIS_TRSNO
+			,TRSHIS_SNDDT
+			,TRSHIS_SNDTM
+			,TRSHIS_SCHDT
+			,TRSHIS_SCHNO
+			,TRSHIS_INVLDYN
+			,TRSHIS_INLRQ
+			,TRSHIS_INLRQTM
+			,TRSHIS_RSCD
+			,TRSHIS_BRSCD
+			,TRSHIS_ACCNO
+			,TRSHIS_ASMCNT
+			,TRSHIS_TRSKN
+			,TRSHIS_TRSAMT
+			,TRSHIS_ACCAMT
+			,TRSHIS_NTC
+			,TRSHIS_CHKNO
+			,TRSHIS_CASH
+			,TRSHIS_CHKAMT
+			,TRSHIS_ETCAMT
+			,TRSHIS_VACCNO
+			,TRSHIS_TRSDT
+			,TRSHIS_TRSTM
+			,TRSHIS_BKTRNO
+			,TRSHIS_TRBKCD
+			,TRSHIS_BRNCD
+			,TRSHIS_INLRS
+			,TRSHIS_INLRSTM
+		)
+		VALUES
+		(
+			#{TRSHIS_SEQ}
+			,#{MBRBNK_SEQ}
+			,#{TRSHIS_SNDCNT}
+			,#{TRSHIS_TRSNO}
+			,#{TRSHIS_SNDDT}
+			,#{TRSHIS_SNDTM}
+			,#{TRSHIS_SCHDT}
+			,#{TRSHIS_SCHNO}
+			,'Y'
+			,#{TRSHIS_INLRQ}
+			,CURRENT_TIMESTAMP
+			,#{TRSHIS_RSCD}
+			,#{TRSHIS_BRSCD}
+			,#{TRSHIS_ACCNO}
+			,#{TRSHIS_ASMCNT}
+			,#{TRSHIS_TRSKN}
+			,#{TRSHIS_TRSAMT}
+			,#{TRSHIS_ACCAMT}
+			,#{TRSHIS_NTC}
+			,#{TRSHIS_CHKNO}
+			,#{TRSHIS_CASH}
+			,#{TRSHIS_CHKAMT}
+			,#{TRSHIS_ETCAMT}
+			,#{TRSHIS_VACCNO}
+			,#{TRSHIS_TRSDT}
+			,#{TRSHIS_TRSTM}
+			,#{TRSHIS_BKTRNO}
+			,#{TRSHIS_TRBKCD}
+			,#{TRSHIS_BRNCD}
+			,#{TRSHIS_INLRS}
+			,CURRENT_TIMESTAMP
+		)
+		;
+	]]></insert>
+</mapper>

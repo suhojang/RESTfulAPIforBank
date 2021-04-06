@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.service.impl.RL_TCP_Mapper">
+	<!-- 거래내역 통지 요청 데이터 저장  -->
+	<insert id="RL_TCP_I1000J" parameterType="Map"><![CDATA[
+		INSERT INTO TBRL_TRSHIS(
+			TRSHIS_SEQ
+			,MBRBNK_SEQ
+			,TRSHIS_SNDCNT
+			,TRSHIS_TRSNO
+			,TRSHIS_SNDDT
+			,TRSHIS_SNDTM
+			,TRSHIS_RSCD
+			,TRSHIS_BRSCD
+			,TRSHIS_SCHDT
+			,TRSHIS_SCHNO
+			,TRSHIS_ACCNO
+			,TRSHIS_ASMCNT
+			,TRSHIS_TRSKN
+			,TRSHIS_TRSAMT
+			,TRSHIS_ACCAMT
+			,TRSHIS_NTC
+			,TRSHIS_CHKNO
+			,TRSHIS_CASH
+			,TRSHIS_CHKAMT
+			,TRSHIS_ETCAMT
+			,TRSHIS_VACCNO
+			,TRSHIS_TRSDT
+			,TRSHIS_TRSTM
+			,TRSHIS_BKTRNO
+			,TRSHIS_TRBKCD
+			,TRSHIS_BRNCD
+			,TRSHIS_ORGRQ
+		)VALUES(
+			#{TRSHIS_SEQ}
+			,#{MBRBNK_SEQ}
+			,#{TRSHIS_SNDCNT}
+			,#{TRSHIS_TRSNO}
+			,#{TRSHIS_SNDDT}
+			,#{TRSHIS_SNDTM}
+			,#{TRSHIS_RSCD}
+			,#{TRSHIS_BRSCD}
+			,#{TRSHIS_SCHDT}
+			,#{TRSHIS_SCHNO}
+			,#{TRSHIS_ACCNO}
+			,#{TRSHIS_ASMCNT}
+			,#{TRSHIS_TRSKN}
+			,#{TRSHIS_TRSAMT}
+			,#{TRSHIS_ACCAMT}
+			,#{TRSHIS_NTC}
+			,#{TRSHIS_CHKNO}
+			,#{TRSHIS_CASH}
+			,#{TRSHIS_CHKAMT}
+			,#{TRSHIS_ETCAMT}
+			,#{TRSHIS_VACCNO}
+			,#{TRSHIS_TRSDT}
+			,#{TRSHIS_TRSTM}
+			,#{TRSHIS_BKTRNO}
+			,#{TRSHIS_TRBKCD}
+			,#{TRSHIS_BRNCD}
+			,#{TRSHIS_ORGRQ}
+		)
+		;
+	]]></insert>
+	
+	<!-- 거래내역 통지 응답 데이터 저장 -->
+	<update id="RL_TCP_U1000J" parameterType="Map"><![CDATA[
+		UPDATE TBRL_TRSHIS
+		SET TRSHIS_ORGRS	= #{TRSHIS_ORGRS}
+			,TRSHIS_BRSCD	= #{TRSHIS_BRSCD}
+			,TRSHIS_UDT		= CURRENT_TIMESTAMP
+		WHERE 1=1
+			AND TRSHIS_SEQ	= #{TRSHIS_SEQ}
+		;
+	]]></update>
+	
+	<!-- 상사 은행 상세 조회 -->
+	<select id="RL_TCP_V1000J" parameterType="Map" resultType="oMap"><![CDATA[
+		SELECT 
+			A.MBRBNK_SEQ
+			,A.MBRINF_SEQ
+			,A.MBRBNK_BNKCD
+			,A.MBRBNK_DISCD
+			,A.MBRBNK_FBSCD
+			,A.MBRBNK_CHNL
+			,A.MBRBNK_RCYN
+			,A.MBRBNK_OPDT
+			,A.MBRBNK_OPYN
+			,A.MBRBNK_YN
+			,A.MBRBNK_RDT
+			,A.MBRBNK_UDT
+		FROM TBRL_MBRBNK A
+		WHERE 1=1
+			AND A.MBRBNK_YN		= 'Y'
+			AND A.MBRBNK_BNKCD	= #{H_BNK_CD3}
+			AND SUBSTRING(A.MBRBNK_DISCD, 5)	= SUBSTRING(#{H_GP_CD}, 5)
+			AND SUBSTRING(A.MBRBNK_FBSCD, 5)	= SUBSTRING(#{H_FBS_CD}, 5)
+		LIMIT 1
+		;
+	]]></select>
+</mapper>

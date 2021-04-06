@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<Configuration>
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d %5p [%c] %m%n" />
+        </Console>
+		<RollingFile name="rollingFile" fileName="D:/eGovFrameDev-3.8.0-64bit/workspace/inHouseAPI/logs/apps.log" filePattern="D:/eGovFrameDev-3.8.0-64bit/workspace/inHouseAPI/logs/apps.%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout pattern="%d %5p [%c] %m%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="10 MB"/>
+			</Policies>
+		</RollingFile>
+		<RollingFile name="errorFile" fileName="D:/eGovFrameDev-3.8.0-64bit/workspace/inHouseAPI/logs/error.log" filePattern="D:/eGovFrameDev-3.8.0-64bit/workspace/inHouseAPI/logs/error.%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout pattern="%d %5p [%c] %m%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="10 MB"/>
+			</Policies>
+		</RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.kwic" level="DEBUG" additivity="true">
+			<AppenderRef ref="rollingFile"/>
+        </Logger>
+        <Logger name="project" level="DEBUG" additivity="true">
+			<AppenderRef ref="rollingFile"/>
+        </Logger>
+        <Logger name="egovframework" level="WARN" additivity="true">
+			<AppenderRef ref="rollingFile"/>
+        </Logger>
+        <Logger name="jdbc.sqltiming" level="WARN" additivity="true">
+			<AppenderRef ref="rollingFile"/>
+        </Logger>
+        <Logger name="org.springframework" level="WARN" additivity="true">
+            <AppenderRef ref="console" />
+        </Logger>
+        <Logger name="org.apache" level="WARN" additivity="true">
+            <AppenderRef ref="console" />
+        </Logger>
+        <Logger name="org.mybatis" level="WARN" additivity="true">
+            <AppenderRef ref="console" />
+        </Logger>
+        <Logger name="java.sql" level="WARN" additivity="true">
+			<AppenderRef ref="rollingFile"/>
+        </Logger>
+        <Logger name="error" level="ERROR" additivity="true">
+            <AppenderRef ref="console" />
+			<AppenderRef ref="errorFile"/>
+        </Logger>
+        <Root level="DEBUG">
+            <AppenderRef ref="console" />
+        </Root>
+    </Loggers>
+</Configuration>

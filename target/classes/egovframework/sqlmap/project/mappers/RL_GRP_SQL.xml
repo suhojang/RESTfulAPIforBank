@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.service.impl.RL_GRP_Mapper">
+	<!-- 단지 조회 -->
+	<select id="RL_GRP_S1000J" parameterType="Map" resultType="oMap"><![CDATA[
+		SELECT 
+			A.GRPINF_SEQ
+			,A.GRPINF_CNO
+			,A.GRPINF_CNM
+			,A.GRPINF_YN
+			,A.GRPINF_RDT
+			,A.GRPINF_UDT
+		FROM TBRL_GRPINF A
+		]]>
+		WHERE 1=1
+		AND A.GRPINF_YN	= 'Y'
+		<if test="GRPBIZNO != null and GRPBIZNO != ''">
+	        <![CDATA[
+				AND A.GRPINF_CNO = #{GRPBIZNO}
+			]]>
+		</if>
+		<![CDATA[
+		ORDER BY GRPINF_SEQ DESC
+		LIMIT #{limit} OFFSET #{offset}
+	]]></select>
+	
+	<!-- 단지정보 상세 조회 -->
+	<select id="RL_GRP_V1000J" parameterType="Map" resultType="oMap"><![CDATA[
+		SELECT 
+			A.GRPINF_SEQ
+			,A.GRPINF_CNO
+			,A.GRPINF_CNM
+			,A.GRPINF_YN
+			,A.GRPINF_RDT
+			,A.GRPINF_UDT
+		FROM TBRL_GRPINF A
+		WHERE 1=1
+			AND A.AGTINF_YN	= 'Y'
+			AND A.GRPINF_CNO = #{GRPBIZNO}
+	]]></select>
+	
+	<!-- 단지정보 등록 -->
+	<insert id="RL_GRP_I1000J" parameterType="Map"><![CDATA[
+		INSERT INTO TBRL_GRPINF(
+			GRPINF_SEQ
+			,GRPINF_CNO
+			,GRPINF_CNM
+		)VALUES(
+			 #{GRPINF_SEQ}
+			,#{GRPBIZNO}
+			,#{GRPBIZNM}
+		)
+	]]></insert>
+	
+	<!-- 단지정보 수정 -->
+	<update id="RL_GRP_U1000J" parameterType="Map"><![CDATA[
+		UPDATE TBRL_GRPINF
+		SET GRPINF_CNM		= #{GRPBIZNM}
+		WHERE 1=1
+			AND GRPINF_CNO = #{GRPBIZNO}
+	]]></update>
+	
+	<!-- 단지정보 삭제 -->
+	<delete id="RL_GRP_D1000J" parameterType="Map"><![CDATA[
+		DELETE FROM TBRL_GRPINF 
+		WHERE 1=1
+			AND GRPINF_CNO = #{GRPBIZNO}
+	]]></delete>
+	
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="euc-kr"?><!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties version="1.0">
+	<!-- <entry key="manageips_name">Manage Ips</entry>
+	<entry key="manageips_key">manageips</entry>
+	<entry key="manageips_cron">0 0/1 * * * *</entry>
+	<entry key="manageips_lastday">N</entry>
+	<entry key="manageips_params"><![CDATA[]]></entry>
+	<entry key="manageips_type">2</entry>
+	 -->
+	<!-- ksnet 개시일자,개시여부 초기화 -->
+	<entry key="ksnetinit_name">Ksnet init</entry>
+	<entry key="ksnetinit_key">ksnetinit</entry>
+	<entry key="ksnetinit_cron">0 50 7 * * *</entry>
+	<entry key="ksnetinit_lastday">N</entry>
+	<entry key="ksnetinit_params"><![CDATA[]]></entry>
+	<entry key="ksnetinit_type">2</entry>
+	
+	<!-- ksnet 개시 전문 송신 -->
+	<entry key="ksnetopen_name">Ksnet Open</entry>
+	<entry key="ksnetopen_key">ksnetopen</entry>
+	<entry key="ksnetopen_cron">0 0/10 8,9,10,11 * * *</entry>
+	<entry key="ksnetopen_lastday">N</entry>
+	<entry key="ksnetopen_params"><![CDATA[]]></entry>
+	<entry key="ksnetopen_type">2</entry>
+	
+	<!-- ksnet 거래내역통지 결번 송신 -->
+	<entry key="ksnetinvl_name">Ksnet Invl</entry>
+	<entry key="ksnetinvl_key">ksnetinvl</entry>
+	<entry key="ksnetinvl_cron">0 40 0/1 * * *</entry>
+	<entry key="ksnetinvl_lastday">N</entry>
+	<entry key="ksnetinvl_params"><![CDATA[]]></entry>
+	<entry key="ksnetinvl_type">2</entry>
+</properties>

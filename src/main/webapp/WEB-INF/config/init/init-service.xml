@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<init-service desc="웹 시작서비스 정보" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="./init-service.xsd">
+	<!-- 
+		service element를 반복하여 기술할 수 있습니다. 
+		name : 서비스명, 반드시 unique하여하 합니다.
+		service-class : 서비스 담당 class, package를 포함하여 기술합니다.
+		runnable : 서비스 실행여부, true/false
+		init-start : 서비스 실행 후 스케쥴 자동시작 여부, true/false
+		init-time : 스케쥴 시작 전 대기시간 (seconds)
+		sleep-time : 스케쥴 사이의 휴식시간 (seconds)
+		run-times : 스케쥴 반복 횟수, 0보다 작거나 같을 경우 무한반복, 0보다 클경우 지정된 횟수
+		init-params : 서비스 실행에 필요한 초기 변수값들
+	 -->
+	
+	<service desc="KSNET 통지데이터 Receive 위한 TCP 서버">
+		<name>KwTcpServer</name>
+		<service-class>project.server.KsnetTcpServer</service-class>
+		<runnable>true</runnable>
+		<init-start>true</init-start>
+		<init-time>5</init-time>
+		<sleep-time>5</sleep-time>
+		<run-times>-1</run-times>
+		<init-params>
+			<param name="handler-class">project.server.KsnetTcpHandler</param>
+			<!-- 테스트 -->
+			<param name="port">28801</param>
+			<!-- 운영 -->
+			<!-- 
+			<param name="port">28800</param>
+			-->
+			<param name="timeout" desc="milliseconds">60*1000</param>
+			<param name="peer-encoding" desc="ksnet encoding">ms949</param>
+			<param name="bufSize" desc="allocate socket bufSize">2048</param>
+			<param name="byteSize" desc="allocate socket bufSize">300</param>
+			<param name="parser-prefix">project.server.parser.Parser_</param>
+			<param name="msgcd-start-index" desc="from 0 index">19</param>
+			<param name="msgcd-size" desc="bytes length">4</param>
+			<param name="svrcd-start-index" desc="from 0 index">23</param>
+			<param name="svrcd-size" desc="bytes length">3</param>
+		</init-params>
+	</service>
+	
+</init-service>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<bean name="propertiesService" class="egovframework.rte.fdl.property.impl.EgovPropertyServiceImpl" destroy-method="destroy">
+		<property name="properties">
+	        <map>
+	        	<entry key="pageNo" value="1"/><!-- default 페이지 정보 -->
+	        	<entry key="limit" value="10"/><!-- default 페이지 조회 개수 -->
+	        	<entry key="channel" value="KSNET"/><!-- 기본 채널 설정 -->
+	        	<entry key="peer-encoding" value="ms949"/><!-- Server encoding -->
+	        	
+	        	<entry key="ksnet-tcp-ip" value="129.200.9.18"/>
+	        	<entry key="ksnet-tcp-R-port" value="9237"/>
+	        	<entry key="ksnet-tcp-D-port" value="9238"/>
+	        	<entry key="ksnet-tcp-timeout" value="60*1000"/>
+	        	
+	        	<entry key="encryptKey" value="A!B1C@D2E#F3GHIJKLMNOPQRSTUVWXYZ"/><!-- aes256 키 -->
+	        	<entry key="service-type" value="T"/><!-- D:develop T:test R:real -->
+	        	<entry key="isMaster" value="true"/><!-- 마스터서버여부 true/false -->
+	        	<entry key="debugQuery" value="true"/><!-- 쿼리 로그 보기 true/false -->
+	        </map>
+		</property>
+	</bean>
+	
+</beans>	
