@@ -1,6 +1,6 @@
 ### Bank 거래를 위한 RESTful API Server
 
-#### Intro
+#### INTRO
 > eGovframework, maven, mybatis 을 활용하여 개발
 > 
 > 이 외 Thread를 활용한 Socket통신, 전문 Parsing, Batch Schedule 개발
@@ -9,6 +9,16 @@
 > [고객사 -> RESTfull API Server -> KS-NET(VAN) -> BANK] 흐름을 따른다.
 > 
 > 고객사에 배포되는 [jar파일](https://github.com/suhojang/RESTfulAPIforBank-jar) 을 이용하여 Server와 통신
+
+#### ROLE
+> System Architecture Design
+> 
+> Database Design
+> 
+> RESTful API Develop
+> 
+> 모든 업무를 1인으로 담당
+> 
 
 ```
 git clone https://github.com/suhojang/RESTfulAPIforBank.git
