@@ -2,6 +2,7 @@
 
 ### Intro
 > eGovframework, maven, mybatis 을 활용하여 개발
+> 
 > 이 외 Thread를 활용한 Socket통신, 전문 Parsing, Batch Schedule 개발
 > 고객사에서 뱅킹 업무가 필요한 경우 API 호출로 간편하게 처리 할 수 있도록 서버 구성
 >
