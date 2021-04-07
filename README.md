@@ -15,6 +15,8 @@
 > 
 > Database Design
 > 
+> WBS Management
+> 
 > RESTful API Develop
 > 
 > 모든 업무를 1인으로 담당
