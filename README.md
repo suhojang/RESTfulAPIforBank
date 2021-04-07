@@ -6,6 +6,7 @@
 
 + ROLE
   + Thread를 활용한 Socket(TCP) 통신, 전문(Data) Parsing, Batch Schedule 기능 구현
+  + Request Data Validate를 위한 Filter 기능 구현 (xsd, xml 활용)
   + eGovframework, Maven, Mybatis를 활용
   + System Architecture Design
   + Database Design
