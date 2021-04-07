@@ -1,6 +1,6 @@
-## Bank 거래를 위한 RESTful API Server
+### Bank 거래를 위한 RESTful API Server
 
-### Intro
+#### Intro
 > eGovframework, maven, mybatis 을 활용하여 개발
 > 
 > 이 외 Thread를 활용한 Socket통신, 전문 Parsing, Batch Schedule 개발
