@@ -8,7 +8,7 @@
 >
 > [고객사 -> RESTfull API Server -> KS-NET(VAN) -> BANK] 흐름을 따른다.
 > 
-> 고객사에 배포되는 jar파일[https://github.com/suhojang/RESTfulAPIforBank-jar]을 이용하여 Server와 통신
+> 고객사에 배포되는 jar파일[https://github.com/suhojang/RESTfulAPIforBank-jar] 을 이용하여 Server와 통신
  
 ```
 git clone https://github.com/suhojang/RESTfulAPIforBank.git
